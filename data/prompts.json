@@ -1,0 +1,83 @@
+[
+  {
+    "id": "cp-001",
+    "title": "The Two Doors",
+    "category": "Problem Solving",
+    "difficulty": "medium",
+    "prompt": "You're in a room with two doors. One leads to freedom, one to danger. Two guards know which is which — one always lies, one always tells the truth. You can ask ONE question to ONE guard. What do you ask?",
+    "hint": "Think about what question gives the same answer regardless of which guard you ask.",
+    "type": "text"
+  },
+  {
+    "id": "cp-002",
+    "title": "Reframe the Failure",
+    "category": "Reframing",
+    "difficulty": "easy",
+    "prompt": "Think of something you recently failed at or gave up on. Now rewrite it as a scientist would — not as failure, but as a data point. What did the experiment reveal?",
+    "hint": "Scientists don't fail — they collect results. What result did you collect?",
+    "type": "text"
+  },
+  {
+    "id": "cp-003",
+    "title": "Alien Perspective",
+    "category": "Perspective Shift",
+    "difficulty": "easy",
+    "prompt": "An alien visits Earth and watches humans use smartphones for one day. They write a report on what they observed. Write the first paragraph of that report.",
+    "hint": "Strip away all assumptions. The alien has no context for what 'normal' means.",
+    "type": "text"
+  },
+  {
+    "id": "cp-004",
+    "title": "The Bridge Problem",
+    "category": "Brain Teaser",
+    "difficulty": "hard",
+    "prompt": "4 people need to cross a bridge at night with one torch. Max 2 cross at once. A=1min, B=2min, C=5min, D=10min. The pair moves at the slower person's pace. You have 17 minutes. How do they all cross?",
+    "hint": "The key insight: who carries the torch back matters more than who crosses first.",
+    "type": "text"
+  },
+  {
+    "id": "cp-005",
+    "title": "100 Uses",
+    "category": "Creative Thinking",
+    "difficulty": "easy",
+    "prompt": "You have exactly 3 minutes. List as many uses as you can for a broken umbrella. No idea is too weird. Go.",
+    "hint": "Think: material, shape, mechanism, metaphor, humor, destruction, art.",
+    "type": "text"
+  },
+  {
+    "id": "cp-006",
+    "title": "The Opposite Solution",
+    "category": "Lateral Thinking",
+    "difficulty": "medium",
+    "prompt": "Pick any problem you're currently dealing with. Now describe the WORST possible way to handle it. Then flip every element — what does the ideal solution look like now?",
+    "hint": "Inversion reveals what you're avoiding. The opposite of bad isn't always obvious.",
+    "type": "text"
+  },
+  {
+    "id": "wl-001",
+    "title": "Daily Wordle",
+    "category": "Word Puzzles",
+    "difficulty": "medium",
+    "prompt": "Guess the 5-letter word in 6 tries. Green = right letter right spot. Yellow = right letter wrong spot.",
+    "hint": "Start with a word that uses common vowels: CRANE, SLATE, AUDIO.",
+    "type": "wordle"
+  },
+  {
+    "id": "sd-001",
+    "title": "Sudoku Sprint",
+    "category": "Logic",
+    "difficulty": "easy",
+    "prompt": "Fill the 9x9 grid so every row, column, and 3x3 box contains digits 1-9.",
+    "hint": "Start with rows/columns/boxes that have the most numbers already filled.",
+    "type": "sudoku"
+  },
+  {
+    "id": "ch-001",
+    "title": "Chess Puzzle",
+    "category": "Strategic Thinking",
+    "difficulty": "hard",
+    "prompt": "White to move — find the checkmate in 2 moves.",
+    "hint": "Look for a forcing move that limits all of the king's escape squares.",
+    "type": "chess"
+  }
+]

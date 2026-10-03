@@ -1,0 +1,34 @@
+# Expert rule baseline — what a risk analyst would ship on day 1 before any model.
+# A user-day's rule score = sum of weights of rules that fire.
+# Each rule has a reason code so a decision can be explained / audited.
+
+rules:
+  - code: R01_BURST
+    desc: "Very high prompt velocity"
+    when: "max_msgs_per_min >= 12"
+    weight: 3
+
+  - code: R02_MACHINE_REGULAR
+    desc: "Inter-prompt gaps too regular for a human (low CV) with real volume"
+    when: "gap_cv < 0.35 and msgs >= 40"
+    weight: 3
+
+  - code: R03_MULTI_TZ
+    desc: "Same account active from 2+ time zones in 7 days"
+    when: "max_tz_7d >= 2"
+    weight: 2
+
+  - code: R04_CONCURRENT_DEVICES
+    desc: "Two devices in simultaneous sessions for a meaningful time"
+    when: "concurrent_device_minutes >= 20"
+    weight: 2
+
+  - code: R05_NIGHT_BULK
+    desc: "Bulk usage concentrated at night"
+    when: "night_share >= 0.6 and msgs >= 60"
+    weight: 2
+
+  - code: R06_REASK_LOOP
+    desc: "Templated re-asking"
+    when: "reask_share >= 0.3 and msgs >= 30"
+    weight: 1

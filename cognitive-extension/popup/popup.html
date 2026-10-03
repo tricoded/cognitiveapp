@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cognitive AI Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0d0d14;
+      --surface: #13131f;
+      --border:  #1e1e30;
+      --accent:  #7c6af7;
+      --accent2: #10b981;
+      --warn:    #f59e0b;
+      --danger:  #ef4444;
+      --text:    #e2e8f0;
+      --muted:   #6b7280;
+      --mono:    'DM Mono', monospace;
+      --display: 'Syne', sans-serif;
+    }
+
+    body {
+      width: 340px;
+      min-height: 200px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ───────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .logo {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .title {
+      font-family: var(--display);
+      font-size: 15px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.3px;
+    }
+    .subtitle {
+      font-size: 9px; color: var(--muted);
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+
+    /* ── Status dot ──────────────────────────────────── */
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%; background: var(--muted);
+      transition: background 0.3s;
+    }
+    .status-dot.active {
+      background: var(--accent2);
+      box-shadow: 0 0 6px var(--accent2);
+      animation: pulse 2s infinite;
+    }
+    .status-dot.warn   { background: var(--warn); }
+    .status-dot.danger { background: var(--danger); }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+
+    /* ── Budget bar ──────────────────────────────────── */
+    .budget-section {
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .budget-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: 6px;
+    }
+    .budget-label {
+      font-size: 10px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.6px;
+    }
+    .budget-value {
+      font-family: var(--display);
+      font-size: 22px; font-weight: 800;
+      color: var(--text); line-height: 1;
+    }
+    .budget-value span {
+      font-size: 12px; color: var(--muted);
+      font-weight: 400; font-family: var(--mono);
+    }
+    .bar-track {
+      height: 6px; background: var(--border);
+      border-radius: 99px; overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%; border-radius: 99px;
+      background: var(--accent2);
+      transition: width 0.5s ease, background 0.3s;
+    }
+    .budget-meta {
+      display: flex; justify-content: space-between;
+      margin-top: 5px; font-size: 10px; color: var(--muted);
+    }
+
+    /* ── Active sessions ─────────────────────────────── */
+    .section {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-label {
+      font-size: 9px; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .session-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px; padding: 8px 10px;
+      margin-bottom: 6px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 8px;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .session-card.active-tab {
+      border-left-color: var(--accent2);
+      background: #0f1f1a;
+    }
+    .session-name {
+      font-family: var(--display);
+      font-weight: 600; font-size: 12px; color: var(--text);
+    }
+    .badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
+    .cat-badge {
+      background: rgba(124, 106, 247, 0.15);
+      color: var(--accent);
+      font-size: 9px; padding: 1px 6px;
+      border-radius: 99px; border: 1px solid rgba(124, 106, 247, 0.3);
+    }
+    .msg-badge {
+      background: var(--border); color: var(--muted);
+      font-size: 9px; padding: 1px 5px; border-radius: 99px;
+    }
+    .session-time {
+      font-family: var(--display);
+      font-size: 13px; font-weight: 700;
+      color: var(--accent); white-space: nowrap;
+    }
+    .session-card.active-tab .session-time { color: var(--accent2); }
+
+    /* ── Empty state ─────────────────────────────────── */
+    .empty {
+      text-align: center; padding: 10px 0;
+      color: var(--muted); font-size: 11px;
+    }
+    .empty-icon { font-size: 22px; margin-bottom: 4px; }
+
+    /* ── Action buttons ──────────────────────────────── */
+    .actions {
+      display: flex; gap: 8px;
+      padding: 10px 16px 12px;
+    }
+    .btn {
+      flex: 1; padding: 7px 0;
+      border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text);
+      font-family: var(--mono); font-size: 11px;
+      cursor: pointer; text-align: center;
+      transition: all 0.15s;
+      display: flex; align-items: center;
+      justify-content: center; gap: 4px;
+    }
+    .btn:hover {
+      background: var(--border);
+      border-color: var(--accent); color: var(--accent);
+    }
+    .btn-primary {
+      background: var(--accent); border-color: var(--accent);
+      color: #fff; font-family: var(--display);
+      font-weight: 700; font-size: 11px;
+    }
+    .btn-primary:hover {
+      background: #6a58e8; border-color: #6a58e8; color: #fff;
+    }
+
+    /* ── Footer ──────────────────────────────────────── */
+    .footer {
+      padding: 6px 16px 10px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-status { font-size: 9px; color: var(--muted); letter-spacing: 0.3px; }
+    .refresh-btn {
+      background: none; border: none; color: var(--muted);
+      font-size: 11px; cursor: pointer; padding: 2px;
+      transition: color 0.15s, transform 0.3s;
+    }
+    .refresh-btn:hover { color: var(--accent); }
+    .refresh-btn.spinning { animation: spin 0.8s linear; }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ── Skeleton ─────────────────────────────────────── */
+    .skeleton {
+      background: var(--border); border-radius: 4px;
+      animation: shimmer 1.2s infinite;
+    }
+    @keyframes shimmer {
+      0%   { opacity: 0.4; }
+      50%  { opacity: 0.8; }
+      100% { opacity: 0.4; }
+    }
+
+    /* ── Warning banner ──────────────────────────────── */
+    .banner {
+      margin: 0 16px 8px;
+      background: #2a1a0f; border: 1px solid var(--warn);
+      border-radius: 8px; padding: 7px 10px;
+      font-size: 10px; color: var(--warn);
+      display: none; align-items: center; gap: 6px;
+    }
+    .banner.visible { display: flex; }
+
+    /* ── Auto-log indicator ──────────────────────────── */
+    .auto-log-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 99px; padding: 2px 8px;
+      font-size: 9px; color: var(--accent2);
+      margin: 0 16px 8px;
+    }
+    .auto-log-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%; background: var(--accent2);
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">🧠</div>
+      <div>
+        <div class="title">Cognitive</div>
+        <div class="subtitle">AI Tracker</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div id="statusDot" class="status-dot"></div>
+      <button class="refresh-btn" id="refreshBtn" title="Refresh">↻</button>
+    </div>
+  </div>
+
+  <!-- Auto-log status pill -->
+  <div class="auto-log-pill">
+    <div class="auto-log-dot"></div>
+    Auto-logging active — sessions saved on close
+  </div>
+
+  <!-- Budget bar -->
+  <div class="budget-section">
+    <div class="budget-row">
+      <div class="budget-label">Today's AI Time</div>
+      <div id="budgetValue" class="budget-value">—<span> / —min</span></div>
+    </div>
+    <div class="bar-track">
+      <div id="barFill" class="bar-fill" style="width:0%"></div>
+    </div>
+    <div class="budget-meta">
+      <span id="budgetLeft">Loading...</span>
+      <span id="budgetPct">0%</span>
+    </div>
+  </div>
+
+  <!-- Over-budget warning -->
+  <div id="overBudgetBanner" class="banner">
+    ⚠️ You've exceeded your daily AI budget!
+  </div>
+
+  <!-- Active Sessions -->
+  <div class="section">
+    <div class="section-label">🟢 Active Sessions</div>
+    <div id="sessionsList">
+      <div class="skeleton" style="height:44px; border-radius:8px; margin-bottom:6px;"></div>
+    </div>
+  </div>
+
+  <!-- Actions — only Dashboard button, NO openTracker -->
+  <div class="actions">
+    <button class="btn btn-primary" id="openDashboard">📊 Open Dashboard</button>
+    <button class="btn" id="openOptions">⚙️ Settings</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-status" id="lastUpdated">Updating...</span>
+    <span style="font-size:9px; color:var(--muted);">v1.0 · Cognitive</span>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

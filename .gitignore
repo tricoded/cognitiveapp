@@ -1,0 +1,58 @@
+# Environment
+.env
+.env.local
+.env.production
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Runtime state / generated artifacts
+faiss_index.bin
+faiss_map.pkl
+user_patterns.json
+creativity_log.json
+data/creativity_log.json
+app/ml/models/time_predictor.pkl
+.venv/
+
+# Data pipeline outputs (regenerate with `make all`)
+pipeline_data/
+spark-warehouse/
+metastore_db/
+derby.log
+.pytest_cache/

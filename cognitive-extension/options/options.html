@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cognitive — Settings</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #1a1a2e; color: #e2e8f0;
+      padding: 32px; max-width: 480px;
+    }
+    h1 { font-size: 20px; margin-bottom: 6px; }
+    .sub { color: #6b7280; font-size: 13px; margin-bottom: 28px; }
+    label { display: block; font-size: 12px; font-weight: 600;
+            letter-spacing: 0.06em; color: #9ca3af;
+            text-transform: uppercase; margin-bottom: 6px; }
+    input {
+      width: 100%; padding: 10px 12px; background: #1e1e2e;
+      border: 1px solid #2d2d3d; border-radius: 8px;
+      color: #e2e8f0; font-size: 14px; margin-bottom: 20px;
+    }
+    input:focus { outline: 2px solid #6366f1; border-color: transparent; }
+    button {
+      padding: 10px 24px; background: #6366f1; color: white;
+      border: none; border-radius: 8px; font-size: 14px;
+      font-weight: 600; cursor: pointer;
+    }
+    button:hover { background: #4f46e5; }
+    .saved { color: #10b981; font-size: 13px; margin-left: 12px; display: none; }
+    .note { font-size: 11px; color: #4b5563; margin-top: -14px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🧠 Cognitive Settings</h1>
+  <p class="sub">Configure where your data goes and your personal daily budget.</p>
+
+  <label for="apiBase">Backend API URL</label>
+  <input id="apiBase" type="url" placeholder="https://api.yourcognitive.app" />
+  <p class="note">Your FastAPI backend URL. Use http://localhost:8000 while developing.</p>
+
+  <label for="appUrl">Dashboard URL</label>
+  <input id="appUrl" type="url" placeholder="https://app.yourcognitive.app" />
+  <p class="note">Your Streamlit app URL. Opened when you click "Open Full Dashboard".</p>
+
+  <label for="budgetMins">Daily AI Budget (minutes)</label>
+  <input id="budgetMins" type="number" min="10" max="600" placeholder="120" />
+  <p class="note">Nudge fires when you hit this limit in a single day.</p>
+
+  <button id="save">Save Settings</button>
+  <span class="saved" id="savedMsg">✅ Saved!</span>
+
+  <script src="options.js"></script>
+</body>
+</html>

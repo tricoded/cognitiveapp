@@ -1,0 +1,192 @@
+/* ═══════════════════════════════════════════════════════════
+   cognitive/assets/style.css
+   Only targets native Streamlit components.
+   All custom HTML uses inline styles — no class dependency.
+═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Tokens ──────────────────────────────────────────────── */
+:root {
+    --bg:           #f4f4f0;
+    --bg-surface:   #ffffff;
+    --border:       #e0dfd8;
+    --accent:       #5b52e8;
+    --accent-lt:    rgba(91,82,232,0.10);
+    --accent-md:    rgba(91,82,232,0.22);
+    --text:         #1a1a2e;
+    --muted:        #7a788a;
+    --success:      #1f9e6e;
+    --danger:       #e8394a;
+    --warning:      #d97706;
+    --shadow:       0 1px 4px rgba(0,0,0,0.07);
+    --shadow-md:    0 4px 14px rgba(0,0,0,0.10);
+    --radius:       12px;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg:           #0e0e14;
+        --bg-surface:   #19192a;
+        --border:       #2c2c3e;
+        --accent:       #7c75f5;
+        --accent-lt:    rgba(124,117,245,0.12);
+        --accent-md:    rgba(124,117,245,0.25);
+        --text:         #ebebf5;
+        --muted:        #6a6880;
+        --success:      #3dd68c;
+        --danger:       #ff5f6d;
+        --warning:      #ffb347;
+        --shadow:       0 1px 4px rgba(0,0,0,0.35);
+        --shadow-md:    0 4px 14px rgba(0,0,0,0.50);
+    }
+}
+
+/* ── Base ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, .stApp     { font-family: 'DM Sans', sans-serif !important; }
+.stApp                 { background: var(--bg) !important; }
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+section[data-testid="stSidebar"] {
+    background: var(--bg-surface) !important;
+    border-right: 1px solid var(--border) !important;
+}
+section[data-testid="stSidebar"] * { color: var(--text) !important; }
+
+/* ── Sidebar nav — rename ONLY the very first page item to "Home" ───────── */
+[data-testid="stSidebarNav"] ul > li:first-child a span {
+    font-size: 0 !important;
+    display: inline-block;
+}
+
+[data-testid="stSidebarNav"] ul > li:first-child a span::before {
+    content: "Home";
+    font-size: 0.9rem;
+    color: var(--text) !important;
+}
+
+/* ── Sidebar collapse button ─────────────────────────────── */
+button[data-testid="collapsedControl"] {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+}
+button[data-testid="collapsedControl"] span,
+button[data-testid="collapsedControl"] p,
+button[data-testid="collapsedControl"] div {
+    font-size: 0 !important;          /* hide the text "keyboard_dou..." */
+}
+button[data-testid="collapsedControl"]::after {
+    content: "☰";                     /* simple hamburger icon */
+    font-size: 18px !important;
+    color: var(--text) !important;
+    line-height: 1;
+}
+button[data-testid="collapsedControl"]:hover {
+    border-color: var(--accent) !important;
+}
+button[data-testid="collapsedControl"]:hover::after {
+    color: var(--accent) !important;
+}
+
+/* ── Main block ──────────────────────────────────────────── */
+.main .block-container {
+    padding-top: 2rem !important;
+    max-width: 980px !important;
+    padding-bottom: 4rem !important;
+}
+
+/* ── Typography ──────────────────────────────────────────── */
+h1,h2,h3,h4,h5,h6 {
+    color: var(--text) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+}
+p, span, label, div { color: var(--text); }
+[data-testid="stCaptionContainer"] * { color: var(--muted) !important; }
+
+/* ── Metrics ─────────────────────────────────────────────── */
+[data-testid="metric-container"] {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 16px !important;
+    box-shadow: var(--shadow) !important;
+}
+[data-testid="metric-container"] label {
+    color: var(--muted) !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+}
+[data-testid="stMetricValue"] {
+    color: var(--text) !important;
+    font-size: 1.65rem !important;
+    font-weight: 700 !important;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.stButton > button {
+    border-radius: 10px !important;
+    font-weight: 500 !important;
+    font-size: 0.82rem !important;
+    border: 1px solid var(--border) !important;
+    background: var(--bg-surface) !important;
+    color: var(--text) !important;
+    box-shadow: var(--shadow) !important;
+    transition: all 0.15s ease !important;
+}
+.stButton > button:hover {
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    background: var(--accent-lt) !important;
+}
+
+/* ── Inputs ──────────────────────────────────────────────── */
+input, textarea {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    color: var(--text) !important;
+}
+input:focus, textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px var(--accent-lt) !important;
+    outline: none !important;
+}
+input::placeholder { color: var(--muted) !important; }
+
+/* ── Selectbox ───────────────────────────────────────────── */
+[data-testid="stSelectbox"] > div > div {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    color: var(--text) !important;
+}
+
+/* ── Expander ────────────────────────────────────────────── */
+[data-testid="stExpander"] {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+}
+[data-testid="stExpander"] summary { color: var(--text) !important; }
+
+/* ── Divider ─────────────────────────────────────────────── */
+hr {
+    border: none !important;
+    border-top: 1px solid var(--border) !important;
+    margin: 1rem 0 !important;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }

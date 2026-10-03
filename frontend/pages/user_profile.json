@@ -1,0 +1,9 @@
+{
+  "name": "E",
+  "work_start_hour": 8,
+  "work_end_hour": 23,
+  "daily_goal": 10,
+  "timezone": "Asia/Singapore",
+  "signed_in": false,
+  "signed_in_at": null
+}

@@ -1,0 +1,118 @@
+services:
+  # Redis cache
+  redis:
+    image: redis:7-alpine
+    container_name: cognitive-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    command: redis-server --appendonly yes
+
+  # Main FastAPI application
+  api:
+    build: .
+    container_name: cognitive-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./data/cognitive.db
+      - REDIS_HOST=redis
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_KEEP_ALIVE=24h      
+      - OLLAMA_NUM_PARALLEL=1
+    depends_on:
+      - redis
+      - ollama
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data              
+      - ml_models:/app/models_storage
+    networks:
+      - app-network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Celery worker (background tasks)
+  celery_worker:
+    build: .
+    container_name: cognitive-celery
+    environment:
+      - DATABASE_URL=sqlite:///./data/cognitive.db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    depends_on:
+      - redis
+      - api
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data              
+      - ml_models:/app/models_storage
+    networks:
+      - app-network
+    command: celery -A app.workers.tasks.celery_app worker --loglevel=info
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A app.workers.tasks.celery_app inspect ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Celery beat scheduler (periodic tasks)
+  celery_beat:
+    build: .
+    container_name: cognitive-beat
+    environment:
+      - DATABASE_URL=sqlite:///./data/cognitive.db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    depends_on:
+      - redis
+      - api
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+    networks:
+      - app-network
+    command: celery -A app.workers.tasks.celery_app beat --loglevel=info
+
+  # Ollama AI service
+  ollama:
+    image: ollama/ollama:latest
+    container_name: cognitive-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  redis_data:
+  ml_models:
+  ollama_data:
+
+networks:
+  app-network:
+    driver: bridge
